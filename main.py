@@ -1,29 +1,41 @@
 #!/usr/bin/env python3
 
-import tkinter as tk
+import sys
+
+from random import randint
+from PyQt5 import QtWidgets
 
 
-class Application(tk.Frame):
-    def __init__(self, master=None):
-        super().__init__(master)
-        self.master = master
-        self.pack()
-        self.create_widgets()
-
-    def create_widgets(self):
-        self.hi_there = tk.Button(self)
-        self.hi_there["text"] = "Hello there\n"
-        self.hi_there["command"] = self.say_hi
-        self.hi_there.pack(side="top")
-
-        self.quit = tk.Button(self, text="QUIT", fg="red", command=self.master.destroy)
-        self.quit.pack(side="bottom")
-
-    def say_hi(self):
-        print("Hello there.")
-        print("General Kenobi!!")
+class AnotherWindow(QtWidgets.QWidget):
+    """
+    This "window" is a QWidget. If it has no parent, it
+    will appear as a free-floating window as we want.
+    """
+    def __init__(self):
+        super().__init__()
+        layout = QtWidgets.QVBoxLayout()
+        self.label = QtWidgets.QLabel("Another Window % d" % randint(0, 100))
+        layout.addWidget(self.label)
+        self.setLayout(layout)
 
 
-root = tk.Tk()
-app = Application(master=root)
-app.mainloop()
+class MainWindow(QtWidgets.QMainWindow):
+
+    def __init__(self):
+        super().__init__()
+        self.wind = None  # No external window yet.
+        self.button = QtWidgets.QPushButton("Push for Window")
+        self.button.clicked.connect(self.show_new_window)
+        self.setCentralWidget(self.button)
+
+    def show_new_window(self):
+        if self.wind is None:
+            self.wind = AnotherWindow()
+        self.wind.show()
+
+
+if __name__ == "__main__":
+    app = QtWidgets.QApplication(sys.argv)
+    w = MainWindow()
+    w.show()
+    app.exec_()
