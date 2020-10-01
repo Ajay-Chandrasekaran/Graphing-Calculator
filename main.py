@@ -23,14 +23,12 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def __init__(self):
         super().__init__()
-        self.wind = None  # No external window yet.
         self.button = QtWidgets.QPushButton("Push for Window")
         self.button.clicked.connect(self.show_new_window)
         self.setCentralWidget(self.button)
 
     def show_new_window(self):
-        if self.wind is None:
-            self.wind = AnotherWindow()
+        self.wind = AnotherWindow()
         self.wind.show()
 
 
