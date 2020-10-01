@@ -4,6 +4,7 @@ import sys
 
 from random import randint
 from PyQt5 import QtWidgets
+from PyQt5.QtCore import QTimer
 
 
 class AnotherWindow(QtWidgets.QWidget):
@@ -23,14 +24,12 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def __init__(self):
         super().__init__()
-        self.wind = None  # No external window yet.
         self.button = QtWidgets.QPushButton("Push for Window")
         self.button.clicked.connect(self.show_new_window)
         self.setCentralWidget(self.button)
 
     def show_new_window(self):
-        if self.wind is None:
-            self.wind = AnotherWindow()
+        self.wind = AnotherWindow()
         self.wind.show()
 
 
@@ -38,4 +37,8 @@ if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     w = MainWindow()
     w.show()
-    app.exec_()
+
+    timer = QTimer()
+    timer.timeout.connect(lambda: None)
+    timer.start(100)
+    sys.exit(app.exec_())
