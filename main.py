@@ -4,6 +4,7 @@ import sys
 
 from random import randint
 from PyQt5 import QtWidgets
+from PyQt5.QtCore import QTimer
 
 
 class AnotherWindow(QtWidgets.QWidget):
@@ -36,4 +37,8 @@ if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     w = MainWindow()
     w.show()
-    app.exec_()
+
+    timer = QTimer()
+    timer.timeout.connect(lambda: None)
+    timer.start(100)
+    sys.exit(app.exec_())
